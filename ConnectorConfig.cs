@@ -15,10 +15,11 @@ namespace com.businesscentral
                 apiVersion1 = config["apiVersion1"];
                 apiVersion2 = config["apiVersion2"];
                 authInfo = config["authInfo"];
-                twilioSID = config["twilioSID"];
-                twilioToken = config["twilioToken"];
-                twilioFromNumber = config["twilioFromNumber"];
-                twilioDefaultNumber = config["twilioDefaultNumber"];
+
+                shopifyApiKey = config["shopifyApiKey"];
+                shopifyApiPassword = config["shopifyApiPassword"];
+                shopifyShopName = config["shopifyShopName"];
+                shopifyApiUrl = config["shopifyApiUrl"];
             }
             // If you are customizing here it means you
             //  should give a look on how use
@@ -34,14 +35,14 @@ namespace com.businesscentral
             if (String.IsNullOrEmpty(authInfo))
                 authInfo = "your_username:yout_web_service_access_key";
 
-            if (String.IsNullOrEmpty(twilioSID))
-                twilioSID = "your SID from https://www.twilio.com/console";
-            if (String.IsNullOrEmpty(twilioToken))
-                twilioToken = "your Token from https://www.twilio.com/console";
-            if (String.IsNullOrEmpty(twilioFromNumber))
-                twilioFromNumber = "your Twilio number from https://www.twilio.com/console";
-            if (String.IsNullOrEmpty(twilioDefaultNumber))
-                twilioDefaultNumber = "your Twilio number from https://www.twilio.com/console";
+            if (String.IsNullOrEmpty(shopifyApiKey))
+                shopifyApiKey = "your_shopify_api_username";
+            if (String.IsNullOrEmpty(shopifyApiPassword))
+                shopifyApiPassword = "your_shopify_api_password";
+            if (String.IsNullOrEmpty(shopifyShopName))
+                shopifyShopName = "{your_name}.myshopify.com";
+            if (String.IsNullOrEmpty(shopifyApiUrl))
+                shopifyApiUrl = "admin/api/2020-04";
         }
 
         public String tenant;
@@ -49,11 +50,10 @@ namespace com.businesscentral
         public String apiVersion1;
         public String apiVersion2;
         public String authInfo;
-        public String twilioSID;
-        public String twilioToken;
-        public String twilioFromNumber;
-        public String twilioDefaultNumber;
-        
+        public String shopifyApiKey;
+        public String shopifyApiPassword;
+        public String shopifyShopName;
+        public String shopifyApiUrl;
 
     }
 }

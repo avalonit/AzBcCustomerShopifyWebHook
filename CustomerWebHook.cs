@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Configuration;
+using System.Linq;
 
 namespace com.businesscentral
 {
@@ -33,8 +34,10 @@ namespace com.businesscentral
             }
 
             // Webhook 
+            log.LogInformation("WebHook received");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-            var ev = !String.IsNullOrEmpty(requestBody) ? JsonConvert.DeserializeObject<WebHookEvent>(requestBody) : null;
+            log.LogInformation("WebHook : " + requestBody);
+            var ev = !String.IsNullOrEmpty(requestBody) ? JsonConvert.DeserializeObject<WebHookEvents>(requestBody) : null;
 
             // Load configuration
             var configBuilder = new ConfigurationBuilder()
@@ -43,12 +46,38 @@ namespace com.businesscentral
                 .AddEnvironmentVariables()
                 .Build();
 
-            // Business Central is queried to get order and sale agent detail 
             var config = new ConnectorConfig(configBuilder);
-            BusinessCentralConnector centraConnector = new BusinessCentralConnector(config);
-            var order = await centraConnector.GetCustomerByWebhook(ev);
+            var centraConnector = new BusinessCentralConnector(config, log);
+            var customerConverter = new CustomerConverter();
+            var shopifyConnector = new ShopifyConnector(config);
 
+            if (!(ev == null || ev.Value == null || ev.Value.Count == 0))
+            {
+                foreach (var customer in ev.Value.Where(a => a.ChangeType.Equals("created")))
+                {
+                    // Business Central is queried to get customer detail
+                    log.LogInformation("Get customer");
+                    var bcCustomer = await centraConnector.GetCustomerByWebhook(customer);
+                    if (bcCustomer == null || bcCustomer.Value == null || bcCustomer.Value.Count == 0)
+                    {
+                        log.LogError("Cannot get customer from BC");
+                        break;
+                    }
 
+                    // Conversion between BC and Shopify customer entity
+                    log.LogInformation("Convert entity");
+                    ShopifyCustomer shopifyCustomer = customerConverter.ToShopify(bcCustomer.Value[0]);
+                    if (shopifyCustomer == null)
+                    {
+                        log.LogError("Cannot convert customer");
+                        break;
+                    }
+
+                    // Post new customer to Shopify
+                    log.LogInformation("Post customer");
+                    await shopifyConnector.PostShopifyCustomers(shopifyCustomer);
+                }
+            }
             return new StatusCodeResult(200);
         }
     }

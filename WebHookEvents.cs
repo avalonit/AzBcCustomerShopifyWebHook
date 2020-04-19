@@ -4,13 +4,13 @@ using Newtonsoft.Json;
 
 namespace com.businesscentral
 {
-    public partial class WebHookEvent
+    public partial class WebHookEvents
     {
         [JsonProperty("value")]
-        public List<Value> Value { get; set; }
+        public List<WebHookEvent> Value { get; set; }
     }
 
-    public partial class Value
+    public partial class WebHookEvent
     {
         [JsonProperty("subscriptionId")]
         public string SubscriptionId { get; set; }
