@@ -49,7 +49,7 @@ namespace com.businesscentral
             var config = new ConnectorConfig(configBuilder);
             var centraConnector = new BusinessCentralConnector(config, log);
             var customerConverter = new CustomerConverter();
-            var shopifyConnector = new ShopifyConnector(config);
+            var shopifyConnector = new ShopifyConnector(config, log);
 
             if (!(ev == null || ev.Value == null || ev.Value.Count == 0))
             {
@@ -59,23 +59,18 @@ namespace com.businesscentral
                     log.LogInformation("Get customer");
                     var bcCustomer = await centraConnector.GetCustomerByWebhook(customer);
                     if (bcCustomer == null)
-                    {
                         log.LogError("Cannot get customer from BC");
-                        break;
-                    }
 
                     // Conversion between BC and Shopify customer entity
                     log.LogInformation("Convert entity");
                     ShopifyCustomer shopifyCustomer = customerConverter.ToShopify(bcCustomer);
                     if (shopifyCustomer == null)
-                    {
                         log.LogError("Cannot convert customer");
-                        break;
-                    }
 
                     // Post new customer to Shopify
                     log.LogInformation("Post customer");
-                    await shopifyConnector.PostShopifyCustomers(shopifyCustomer);
+                    if (shopifyCustomer != null)
+                        await shopifyConnector.PostShopifyCustomers(shopifyCustomer);
                 }
             }
             return new StatusCodeResult(200);

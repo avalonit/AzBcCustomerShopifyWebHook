@@ -33,6 +33,7 @@ namespace com.businesscentral
                 return null;
 
             var apiEndPoint = this.ApiWebHookEndPoint + ev.Resource;
+            log.LogInformation("GetCustomerByWebhook HTTP " + apiEndPoint);
 
             using (var httpClient = new HttpClient())
             {
