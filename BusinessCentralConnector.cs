@@ -25,9 +25,9 @@ namespace com.businesscentral
 
             this.AuthInfo = Convert.ToBase64String(Encoding.Default.GetBytes(config.authInfo));
         }
-        public async Task<Customers> GetCustomerByWebhook(WebHookEvent ev)
+        public async Task<Customer> GetCustomerByWebhook(WebHookEvent ev)
         {
-            Customers customer = null;
+            Customer customer = null;
 
             if (ev == null)
                 return null;
@@ -42,9 +42,9 @@ namespace com.businesscentral
                 var responseMessage = await httpClient.GetAsync(apiEndPoint);
                 if (responseMessage.IsSuccessStatusCode)
                 {
-                    var json=await responseMessage.Content.ReadAsStringAsync();
-                    log.LogError("GetCustomerByWebhook customer json: " + json);
-                    customer = JsonConvert.DeserializeObject<Customers>(json);
+                    var json = await responseMessage.Content.ReadAsStringAsync();
+                    log.LogInformation("GetCustomerByWebhook customer json: " + json);
+                    customer = JsonConvert.DeserializeObject<Customer>(json);
                 }
                 else
                     log.LogError("GetCustomerByWebhook HTTP error" + responseMessage.StatusCode.ToString());

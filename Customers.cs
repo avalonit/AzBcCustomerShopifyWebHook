@@ -24,7 +24,7 @@ namespace com.businesscentral
         public Guid Id { get; set; }
 
         [JsonProperty("number")]
-        public long Number { get; set; }
+        public string Number { get; set; }
 
         [JsonProperty("displayName")]
         public string DisplayName { get; set; }
@@ -51,7 +51,7 @@ namespace com.businesscentral
         public string TaxAreaDisplayName { get; set; }
 
         [JsonProperty("taxRegistrationNumber")]
-        public long TaxRegistrationNumber { get; set; }
+        public string TaxRegistrationNumber { get; set; }
 
         [JsonProperty("currencyId")]
         public Guid CurrencyId { get; set; }
@@ -93,6 +93,6 @@ namespace com.businesscentral
         public string CountryLetterCode { get; set; }
 
         [JsonProperty("postalCode")]
-        public long PostalCode { get; set; }
+        public string PostalCode { get; set; }
     }
 }

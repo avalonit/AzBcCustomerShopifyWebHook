@@ -33,6 +33,8 @@ namespace com.businesscentral
                 return new ContentResult { Content = data, ContentType = "application/json; charset=utf-8", StatusCode = 200 };
             }
 
+
+
             // Webhook 
             log.LogInformation("WebHook received");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
@@ -58,7 +60,7 @@ namespace com.businesscentral
                     // Business Central is queried to get customer detail
                     log.LogInformation("Get customer");
                     var bcCustomer = await centraConnector.GetCustomerByWebhook(customer);
-                    if (bcCustomer == null || bcCustomer.Value == null || bcCustomer.Value.Count == 0)
+                    if (bcCustomer == null)
                     {
                         log.LogError("Cannot get customer from BC");
                         break;
@@ -66,7 +68,7 @@ namespace com.businesscentral
 
                     // Conversion between BC and Shopify customer entity
                     log.LogInformation("Convert entity");
-                    ShopifyCustomer shopifyCustomer = customerConverter.ToShopify(bcCustomer.Value[0]);
+                    ShopifyCustomer shopifyCustomer = customerConverter.ToShopify(bcCustomer);
                     if (shopifyCustomer == null)
                     {
                         log.LogError("Cannot convert customer");
