@@ -32,9 +32,7 @@ namespace com.businesscentral
             if (ev == null)
                 return null;
 
-            log.LogInformation("GetCustomerByWebhook HTTP (id=): " + ev.Resource);
             var apiEndPoint = this.ApiWebHookEndPoint + ev.Resource;
-            log.LogInformation("GetCustomerByWebhook HTTP: " + apiEndPoint);
 
             using (var httpClient = new HttpClient())
             {
@@ -43,7 +41,6 @@ namespace com.businesscentral
                 if (responseMessage.IsSuccessStatusCode)
                 {
                     var json = await responseMessage.Content.ReadAsStringAsync();
-                    log.LogInformation("GetCustomerByWebhook customer json: " + json);
                     customer = JsonConvert.DeserializeObject<Customer>(json);
                 }
                 else

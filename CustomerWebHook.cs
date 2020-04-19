@@ -33,8 +33,6 @@ namespace com.businesscentral
                 return new ContentResult { Content = data, ContentType = "application/json; charset=utf-8", StatusCode = 200 };
             }
 
-
-
             // Webhook 
             log.LogInformation("WebHook received");
             string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
