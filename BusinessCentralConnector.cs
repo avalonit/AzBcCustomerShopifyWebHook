@@ -45,7 +45,7 @@ namespace com.businesscentral
                     customer = JsonConvert.DeserializeObject<Customer>(json);
                 }
                 else
-                    log.LogError("GetCustomerByWebhook HTTP error" + responseMessage.StatusCode.ToString());
+                    log.LogError("GetCustomerByWebhook HTTP error: " + responseMessage.StatusCode.ToString());
             }
             return customer;
         }
