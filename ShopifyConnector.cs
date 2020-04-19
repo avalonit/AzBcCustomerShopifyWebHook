@@ -16,15 +16,11 @@ namespace com.businesscentral
         {
             this.config = config;
             this.log = log;
-            log.LogInformation("1 " + config.shopifyApiKey);
-            log.LogInformation("1 " + config.shopifyApiPassword);
-            log.LogInformation("1 " + config.shopifyShopName);
-            log.LogInformation("1 " + config.shopifyApiPassword);
             this.ShopifyBaseApi = String.Format("https://{0}:{1}@{2}/{3}/",
                                     config.shopifyApiKey,
                                     config.shopifyApiPassword,
                                     config.shopifyShopName,
-                                    config.shopifyApiPassword);
+                                    config.shopifyApiUrl);
 
         }
         public async Task<ShopifyCustomer> PostShopifyCustomers(ShopifyCustomer inputCustomer)
