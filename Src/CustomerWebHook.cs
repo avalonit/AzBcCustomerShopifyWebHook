@@ -26,7 +26,7 @@ namespace com.businesscentral
 
             // Validation token for webhook registration
             //  reply token to accept webhoob subcriprion
-            string validationToken = req.Query["validationToken"];
+            var validationToken = req.Query["validationToken"].ToString();
             if (validationToken != null)
             {
                 dynamic data = JsonConvert.SerializeObject(validationToken);
@@ -35,7 +35,7 @@ namespace com.businesscentral
 
             // Webhook 
             log.LogInformation("WebHook received");
-            string requestBody = await new StreamReader(req.Body).ReadToEndAsync();
+            var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
             log.LogInformation("WebHook : " + requestBody);
             var ev = !String.IsNullOrEmpty(requestBody) ? JsonConvert.DeserializeObject<WebHookEvents>(requestBody) : null;
 
@@ -63,7 +63,7 @@ namespace com.businesscentral
 
                     // Conversion between BC and Shopify customer entity
                     log.LogInformation("Convert entity");
-                    ShopifyCustomer shopifyCustomer = customerConverter.ToShopify(bcCustomer);
+                    var shopifyCustomer = customerConverter.ToShopify(bcCustomer);
                     if (shopifyCustomer == null)
                         log.LogError("Cannot convert customer");
 

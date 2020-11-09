@@ -9,7 +9,7 @@ namespace com.businesscentral
             if (customer == null)
                 return null;
 
-            ShopifyCustomer shopifyCustomer = new ShopifyCustomer();
+            var shopifyCustomer = new ShopifyCustomer();
 
             shopifyCustomer.FirstName = customer.Number.ToString();
 

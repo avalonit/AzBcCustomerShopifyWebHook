@@ -14,6 +14,7 @@ namespace com.businesscentral
         private ILogger log;
         private string ShopifyBaseApi = string.Empty;
         private string ShopifyAuthInfo = string.Empty;
+        
         public ShopifyConnector(ConnectorConfig config, ILogger log)
         {
             this.config = config;
